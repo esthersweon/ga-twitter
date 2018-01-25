@@ -7,7 +7,8 @@ class Tweet extends Component {
   render() {
     return (
       <div className="tweet">
-        {/* Render some text here */}
+        <h1>{ this.props.text }</h1>
+        <p>- { this.props.author }</p>
       </div>
     );
   }

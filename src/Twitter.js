@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './Twitter.css';
+import TweetForm from './components/TweetForm';
+import TweetsList from './components/TweetsList';
+import $ from 'jquery';
 
 // const tweetsFromServer = [
 //   {
@@ -15,7 +18,25 @@ import './Twitter.css';
 class Twitter extends Component {
   constructor() {
     super();
+    this.state = {
+      tweets: []
+    };
+    this.handleTweetSubmit = this.handleTweetSubmit.bind(this);
   }
+  handleTweetSubmit(author, text) {
+    $.post('/api/tweets', {author: author, text: text}, (newTweetsInDatabase) => {
+      this.setState({ tweets: newTweetsInDatabase });
+    });
+  }
+  componentWillMount() {
+    $.get('/api/tweets', (fetchedDataFromServer) => {
+      // setState to the data I fetched from server
+      this.setState({
+        tweets: fetchedDataFromServer
+      });
+    });
+  }
+
   render() {
     return (
       <div className="twitter">
@@ -27,6 +48,8 @@ class Twitter extends Component {
         </header>
         <div className="container">
           <h1>Twitter</h1>
+          <TweetForm onTweetSubmit={ this.handleTweetSubmit }/>
+          <TweetsList potato={ this.state.tweets } />
         </div>
       </div>
     );

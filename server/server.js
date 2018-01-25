@@ -20,7 +20,7 @@ app.post('/api/tweets', function(req, res) {
   fs.readFile('server/tweets.json', function(err, data) {
     var tweets = JSON.parse(data);
     tweets.unshift(req.body);
-    fs.writeFile('tweets.json', JSON.stringify(tweets, null, 4), function(err) {
+    fs.writeFile('server/tweets.json', JSON.stringify(tweets, null, 4), function(err) {
       res.setHeader('Cache-Control', 'no-cache');
       res.json(tweets);
     });
